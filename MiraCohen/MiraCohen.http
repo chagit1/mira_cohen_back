@@ -1,0 +1,6 @@
+@MiraCohen_HostAddress = http://localhost:5289
+
+GET {{MiraCohen_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
