@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,29 +9,75 @@ namespace Repository
 {
     public class InstitutionRep : IDataRepository<Institution>
     {
-        public Task<Institution> AddAsync(Institution entity)
+        private readonly IMongoCollection<Institution> _institutions;
+
+        public InstitutionRep(IContext context)
         {
-            throw new NotImplementedException();
+            _institutions = context.Institutions;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task<List<Institution>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _institutions.Find(institution => true).ToListAsync();
         }
 
-        public Task<List<Institution>> GetAllAsync()
+        public async Task<Institution> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _institutions.Find<Institution>(institution => institution.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<Institution> GetByIdAsync(int id)
+        public async Task<Institution> AddAsync(Institution institution)
         {
-            throw new NotImplementedException();
+            await _institutions.InsertOneAsync(institution);
+            return institution;
         }
 
-        public Task<Institution> UpdateAsync(Institution entity)
+        public async Task<Institution> UpdateAsync(Institution institution)
         {
-            throw new NotImplementedException();
+            await _institutions.ReplaceOneAsync(u => u.Id == institution.Id, institution);
+            return institution;
+        }
+
+        public async Task<bool> DeleteAsync(string id)
+        {
+            var result = await _institutions.DeleteOneAsync(i => i.Id == id);
+            return result.DeletedCount > 0;
         }
     }
+}
+
+    //public class InstitutionRep : StudentRep<Institution>
+    //{
+    //    public InstitutionRep(IContext context)
+    //: base(context.Institutions)
+    //    {
+    //    }
+
+    //    public override async Task<List<Institution>> GetAllAsync()
+    //    {
+    //        return await _student.Find(e => true).ToListAsync();
+    //    }
+
+    //    public override async Task<Institution> GetByIdAsync(string id)
+    //    {
+    //        return await _student.Find(e => e.Id == id).FirstOrDefaultAsync();
+    //    }
+
+    //    public override async Task<Institution> AddAsync(Institution entity)
+    //    {
+    //        await _student.InsertOneAsync(entity);
+    //        return entity;
+    //    }
+
+    //    public override async Task<Institution> UpdateAsync(Institution entity)
+    //    {
+    //        await _student.ReplaceOneAsync(e => e.Id == entity.Id, entity);
+    //        return entity;
+    //    }
+
+    //    public override async Task DeleteAsync(string id)
+    //    {
+    //        await _student.DeleteOneAsync(e => e.Id == id);
+    //    }
+    //}
 }

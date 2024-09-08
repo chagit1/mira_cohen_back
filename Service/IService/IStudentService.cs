@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public interface IStudentService
-    {
+    public interface IStudentService<TDTO>
+    { 
+    Task<List<TDTO>> GetAllAsync();
+        Task<TDTO> GetByIdAsync(string id);
+        Task<TDTO> AddAsync(TDTO dto);
+        Task<TDTO> UpdateAsync(TDTO dto);
+        Task<bool> DeleteAsync(string id);
     }
 }

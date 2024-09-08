@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,31 +7,41 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class ParentReportRep : IDataRepository<ParentReport>
+    public class ParentReportRep : IDataRepository<ParentReport>   
     {
-        public Task<ParentReport> AddAsync(ParentReport entity)
+        private readonly IMongoCollection<ParentReport> _parentReport;
+
+        public ParentReportRep(IContext context)
         {
-            throw new NotImplementedException();
+            _parentReport = context.ParentReports;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task<List<ParentReport>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _parentReport.Find(ParentReport => true).ToListAsync();
         }
 
-        public Task<List<ParentReport>> GetAllAsync()
+        public async Task<ParentReport> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _parentReport.Find<ParentReport>(parentReport => parentReport.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<ParentReport> GetByIdAsync(int id)
+        public async Task<ParentReport> AddAsync(ParentReport parentReport)
         {
-            throw new NotImplementedException();
+            await _parentReport.InsertOneAsync(parentReport);
+            return parentReport;
         }
 
-        public Task<ParentReport> UpdateAsync(ParentReport entity)
+        public async Task<ParentReport> UpdateAsync(ParentReport parentReport)
         {
-            throw new NotImplementedException();
+            await _parentReport.ReplaceOneAsync(u => u.Id == parentReport.Id, parentReport);
+            return parentReport;
+        }
+
+        public async Task<bool> DeleteAsync(string id)
+        {
+            var result = await _parentReport.DeleteOneAsync(p => p.Id == id);
+            return result.DeletedCount > 0;
         }
     }
 }
