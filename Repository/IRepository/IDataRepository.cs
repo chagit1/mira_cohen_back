@@ -9,10 +9,10 @@ namespace Repository
     public interface IDataRepository<T>
     {
         Task<List<T>> GetAllAsync();
-        Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(string id);
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
-        Task DeleteAsync(int id);
+        Task<bool> DeleteAsync(string id);
 
     }
 }

@@ -15,7 +15,7 @@ namespace Repository
         {
             services.AddScoped<IDataRepository<User>, UserRep>();
             services.AddScoped<IDataRepository<TeacherReport>, TeacherReportRep>();
-            services.AddScoped<IDataRepository<Student>, StudentRep>();
+            services.AddScoped<IDataRepository<Student>, StudentRep<Student>>();
             services.AddScoped<IDataRepository<ParentReport>, ParentReportRep>();
             services.AddScoped<IDataRepository<Institution>, InstitutionRep>();
             services.AddScoped<IDataRepository<HelpHours>, HelpHoursRep>();

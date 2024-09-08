@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,29 +10,39 @@ namespace Repository
 {
     public class TeacherReportRep : IDataRepository<TeacherReport>
     {
-        public Task<TeacherReport> AddAsync(TeacherReport entity)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly IMongoCollection<TeacherReport> _teacherReport;
 
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+    public TeacherReportRep(IContext context)
+    {
+        _teacherReport = context.TeacherReports;
+    }
 
-        public Task<List<TeacherReport>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+    public async Task<List<TeacherReport>> GetAllAsync()
+    {
+        return await _teacherReport.Find(teacherReport => true).ToListAsync();
+    }
 
-        public Task<TeacherReport> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+    public async Task<TeacherReport> GetByIdAsync(string id)
+    {
+        return await _teacherReport.Find<TeacherReport>(teacherReport => teacherReport.Id == id).FirstOrDefaultAsync();
+    }
 
-        public Task<TeacherReport> UpdateAsync(TeacherReport entity)
+    public async Task<TeacherReport> AddAsync(TeacherReport teacherReport)
+    {
+        await _teacherReport.InsertOneAsync(teacherReport);
+        return teacherReport;
+    }
+
+    public async Task<TeacherReport> UpdateAsync(TeacherReport teacherReport)
+    {
+        await _teacherReport.ReplaceOneAsync(u => u.Id == teacherReport.Id, teacherReport);
+        return teacherReport;
+    }
+
+        public async Task<bool> DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            var result = await _teacherReport.DeleteOneAsync(t => t.Id == id);
+            return result.DeletedCount > 0;
         }
     }
 }

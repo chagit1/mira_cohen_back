@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,29 +9,39 @@ namespace Repository
 {
     public class UserRep : IDataRepository<User>
     {
-        public Task<User> AddAsync(User entity)
+        private readonly IMongoCollection<User> _users;
+
+        public UserRep(IContext context)
         {
-            throw new NotImplementedException();
+            _users = context.Users;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task<List<User>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _users.Find(user => true).ToListAsync();
         }
 
-        public Task<List<User>> GetAllAsync()
+        public async Task<User> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _users.Find<User>(user => user.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<User> GetByIdAsync(int id)
+        public async Task<User> AddAsync(User user)
         {
-            throw new NotImplementedException();
+            await _users.InsertOneAsync(user);
+            return user;
         }
 
-        public Task<User> UpdateAsync(User entity)
+        public async Task<User> UpdateAsync(User user)
         {
-            throw new NotImplementedException();
+            await _users.ReplaceOneAsync(u => u.Id == user.Id, user);
+            return user;
+        }
+
+        public async Task<bool> DeleteAsync(string id)
+        {
+            var result = await _users.DeleteOneAsync(user => user.Id == id);
+            return result.DeletedCount > 0;
         }
     }
 }
