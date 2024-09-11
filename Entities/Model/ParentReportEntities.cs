@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +10,12 @@ namespace Entities
 {
     public class ParentReportEntities
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public int StudentId { get; set; }
-
+        public string StudentId { get; set; }
+        
         public string StrengthArea { get; set; }
-
+        
         public string BirthProcessAndEarlyDevelopment { get; set; }
 
         public string Weaning { get; set; }
@@ -51,5 +53,9 @@ namespace Entities
         public string CurrentEmotionalGap { get; set; }
 
         public string CurrentCulturalAndLeisureGap { get; set; }
+        public ParentReportEntities()
+        {
+            this.AcademicDifficulties = "rgdrg";
+        }
     }
 }

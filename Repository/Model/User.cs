@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,25 +9,42 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
+    public enum UserRole
+    {
+        Manager,
+        Client
+    }
     public class User
     {
-        [Key]
-        public int Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
+        [BsonElement("Name")]
         public string Name { get; set; }
 
-        public string Email { get; set; }
+        [BsonElement("Email")]
+        [BsonIgnoreIfNull]
+        public string? Email { get; set; }
 
-        public string Password { get; set; }
+        [BsonElement("Password")]
+        [BsonIgnoreIfNull]
+        public string? Password { get; set; }
 
-        public UserRole Role { get; set; } // Enum: Manager, Client
+        [BsonElement("Role")]
+        [BsonIgnoreIfNull]
+        public UserRole? Role { get; set; }
 
-        // Navigation Properties
-        public virtual ICollection<Institution> Institutions { get; set; }
-    }
-        public enum UserRole
+        [BsonElement("Institutions")]
+        [BsonIgnoreIfNull]
+        public List<Institution>? Institutions { get; set; }
+
+        public User(string name, string email, string password)
         {
-         Manager,
-         Client
+            this.Name = name;
+            this.Email = email;
+            this.Password = password;
         }
+    }
+       
 }

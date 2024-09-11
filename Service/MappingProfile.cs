@@ -18,13 +18,15 @@ namespace Service
         public MappingProfile()
         {
             CreateMap<User, UserEntities>().ReverseMap();
+            CreateMap<UserRole, UserRoleEntities>().ReverseMap();
             CreateMap<TeacherReport, TeacherReportEntities>().ReverseMap();
+            CreateMap<FamilyStatusEnum, FamilyStatusEnumEntities>().ReverseMap();
             CreateMap<Student, StudentEntities>().ReverseMap();
             CreateMap<ParentReport, ParentReportEntities>().ReverseMap();
             CreateMap<Institution, InstitutionEntities>().ReverseMap();
             CreateMap<HelpHours, HelpHoursEntities>().ReverseMap();
             CreateMap<EligibilityAndCharacterization, EligibilityAndCharacterizationEntities>().ReverseMap();
-
+            
         }
     }
 }
