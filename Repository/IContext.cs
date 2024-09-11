@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -10,17 +11,8 @@ namespace Repository
 {
     public interface IContext
     {
-        //DbSet<EligibilityAndCharacterization> EligibilityAndCharacterizations { get; set; }
-        //DbSet<HelpHours> HelpHourses { get; set; }
-        //DbSet<Institution> Institutions { get; set; }
-        //DbSet<ParentReport> ParentReports { get; set; }
-        //DbSet<Student> Students { get; set; }
-        //DbSet<TeacherReport> TeacherReports { get; set; }
-        //DbSet<User> Users { get; set; }
-
-
-        //Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
-
+        IMongoCollection<T> GetCollection<T>(string v);
+        IMongoCollection<BsonDocument> GetCollection(string collectionName);
         IMongoCollection<EligibilityAndCharacterization> EligibilityAndCharacterizations { get; }
         IMongoCollection<HelpHours> HelpHours { get; }
         IMongoCollection<Institution> Institutions { get; }
@@ -28,10 +20,7 @@ namespace Repository
         IMongoCollection<Student> Students { get; }
         IMongoCollection<TeacherReport> TeacherReports { get; }
         IMongoCollection<User> Users { get; }
-
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
-
-
-
+        Task CreateCollectionsIfNotExists();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));    
     }
 }

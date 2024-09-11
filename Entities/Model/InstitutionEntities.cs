@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +10,10 @@ namespace Entities
 {
     public class InstitutionEntities
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public int UserId { get; set; }
+        public UserEntities User { get; set; }
+
         public string InstitutionName { get; set; }
 
         public string Symbol { get; set; }
@@ -23,6 +26,13 @@ namespace Entities
 
         public string ContactEmail { get; set; }
 
-        public string SupervisorName { get; set; }
+        public string InspectorName { get; set; }
+
+        public List<StudentEntities> Students { get; set; }
+        public InstitutionEntities(string inspectorName)
+        {
+            this.InspectorName = inspectorName;
+            Students = new List<StudentEntities>();
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,38 +12,54 @@ namespace Repository
 {
     public class InstitutionRep : IDataRepository<Institution>
     {
-        private readonly IMongoCollection<Institution> _institutions;
+        private readonly IContext _context;
 
         public InstitutionRep(IContext context)
         {
-            _institutions = context.Institutions;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context.CreateCollectionsIfNotExists().Wait();
+
         }
+        //private readonly IMongoCollection<Institution> _context.Institutions;
+
+        //public InstitutionRep(IContext context)
+        //{
+        //    _context.Institutions = context.Institutions;
+        //}
+        //public InstitutionRep(IOptions<MiraCohenDatabaseSettings> miraCohenDatabaseSettings)
+        //{
+        //    var mongoClient = new MongoClient(miraCohenDatabaseSettings.Value.ConnectionString);
+        //    var mongoDatabase = mongoClient.GetDatabase(miraCohenDatabaseSettings.Value.DatabaseName);
+        //    _context.Institutions = mongoDatabase.GetCollection<Institution>(miraCohenDatabaseSettings.Value.InstitutionsCollectionName);
+        //}
 
         public async Task<List<Institution>> GetAllAsync()
         {
-            return await _institutions.Find(institution => true).ToListAsync();
+            return await _context.Institutions.Find(institution => true).ToListAsync();
         }
 
         public async Task<Institution> GetByIdAsync(string id)
         {
-            return await _institutions.Find<Institution>(institution => institution.Id == id).FirstOrDefaultAsync();
+            return await _context.Institutions.Find<Institution>(institution => institution.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Institution> AddAsync(Institution institution)
         {
-            await _institutions.InsertOneAsync(institution);
+            institution.Id = ObjectId.GenerateNewId().ToString();
+            if (institution == null) throw new ArgumentNullException(nameof(institution));
+            await _context.Institutions.InsertOneAsync(institution);
             return institution;
         }
 
         public async Task<Institution> UpdateAsync(Institution institution)
         {
-            await _institutions.ReplaceOneAsync(u => u.Id == institution.Id, institution);
+            await _context.Institutions.ReplaceOneAsync(u => u.Id == institution.Id, institution);
             return institution;
         }
 
         public async Task<bool> DeleteAsync(string id)
         {
-            var result = await _institutions.DeleteOneAsync(i => i.Id == id);
+            var result = await _context.Institutions.DeleteOneAsync(i => i.Id == id);
             return result.DeletedCount > 0;
         }
     }
@@ -79,5 +98,4 @@ namespace Repository
     //    {
     //        await _student.DeleteOneAsync(e => e.Id == id);
     //    }
-    //}
-}
+    //}}

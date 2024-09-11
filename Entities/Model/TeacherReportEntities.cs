@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace Entities
 {
     public class TeacherReportEntities
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public int StudentId { get; set; }
+        public string StudentId { get; set; }
 
         public string ReadingAndWritingSkills { get; set; }
 
@@ -30,6 +31,12 @@ namespace Entities
 
         public string SocialAndEmotionalConduct { get; set; }
 
-        public string FamilyStatus { get; set; } // String representation of FamilyStatusEnum
+        public FamilyStatusEnumEntities FamilyStatus { get; set; }
+    }
+    public enum FamilyStatusEnumEntities
+    {
+        Divorced,
+        Married,
+        Separated
     }
 }

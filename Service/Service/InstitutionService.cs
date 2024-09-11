@@ -14,7 +14,7 @@ namespace Service
         private readonly IDataRepository<Institution> _repository;
         private readonly IMapper _mapper;
 
-        public InstitutionService(InstitutionRep repository, IMapper mapper)
+        public InstitutionService(IDataRepository<Institution> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

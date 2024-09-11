@@ -1,5 +1,4 @@
 ﻿
-using DBContext;
 using Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
@@ -15,15 +14,16 @@ namespace Service
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+
             services.AddRepositories();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITeacherReportService, TeacherReportService>();
-            services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IStudentService<StudentEntities>, StudentService<Student, StudentEntities>>();
             services.AddScoped<IParentReportService, ParentReportService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<IHelpHoursService, HelpHoursService>();
             services.AddScoped<IEligibilityAndCharacterizationService, EligibilityAndCharacterizationService>();
-            services.AddSingleton<IContext, MyDBContext>();
+
             services.AddAutoMapper(typeof(MappingProfile));
             return services;
         }

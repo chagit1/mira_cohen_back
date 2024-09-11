@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,12 @@ namespace Repository
     public class EligibilityAndCharacterizationRep : StudentRep<EligibilityAndCharacterization>
     {
         public EligibilityAndCharacterizationRep(IContext context)
-            : base(context.EligibilityAndCharacterizations)
+        : base(context) // פשוט להעביר את ה-context למחלקת הבסיס
         {
         }
+        //public EligibilityAndCharacterizationRep(IOptions<MiraCohenDatabaseSettings> miraCohenDatabaseSettings) : base(miraCohenDatabaseSettings)
+        //{ }
+
     }
 
     //public class EligibilityAndCharacterizationRep : StudentRep<EligibilityAndCharacterization>

@@ -1,4 +1,8 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,38 +14,42 @@ namespace Repository
 {
     public class TeacherReportRep : IDataRepository<TeacherReport>
     {
-        private readonly IMongoCollection<TeacherReport> _teacherReport;
+        private readonly IContext _context;
+        public TeacherReportRep(IContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context.CreateCollectionsIfNotExists().Wait();
 
-    public TeacherReportRep(IContext context)
+        }
+        public async Task<List<TeacherReport>> GetAllAsync()
     {
-        _teacherReport = context.TeacherReports;
-    }
-
-    public async Task<List<TeacherReport>> GetAllAsync()
-    {
-        return await _teacherReport.Find(teacherReport => true).ToListAsync();
+        return await _context.TeacherReports.Find(teacherReport => true).ToListAsync();
     }
 
     public async Task<TeacherReport> GetByIdAsync(string id)
     {
-        return await _teacherReport.Find<TeacherReport>(teacherReport => teacherReport.Id == id).FirstOrDefaultAsync();
+        return await _context.TeacherReports.Find<TeacherReport>(teacherReport => teacherReport.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<TeacherReport> AddAsync(TeacherReport teacherReport)
     {
-        await _teacherReport.InsertOneAsync(teacherReport);
+            if (teacherReport == null) throw new ArgumentNullException(nameof(teacherReport)); 
+            teacherReport.Id = ObjectId.GenerateNewId().ToString();
+            if (teacherReport == null) throw new ArgumentNullException(nameof(teacherReport));
+            await _context.TeacherReports.InsertOneAsync(teacherReport);
         return teacherReport;
     }
 
     public async Task<TeacherReport> UpdateAsync(TeacherReport teacherReport)
     {
-        await _teacherReport.ReplaceOneAsync(u => u.Id == teacherReport.Id, teacherReport);
+            if (teacherReport == null) throw new ArgumentNullException(nameof(teacherReport)); 
+            await _context.TeacherReports.ReplaceOneAsync(u => u.Id == teacherReport.Id, teacherReport);
         return teacherReport;
     }
 
         public async Task<bool> DeleteAsync(string id)
         {
-            var result = await _teacherReport.DeleteOneAsync(t => t.Id == id);
+            var result = await _context.TeacherReports.DeleteOneAsync(t => t.Id == id);
             return result.DeletedCount > 0;
         }
     }

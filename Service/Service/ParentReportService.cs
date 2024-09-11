@@ -14,7 +14,7 @@ namespace Service
         private readonly IDataRepository<ParentReport> _repository;
         private readonly IMapper _mapper;
 
-        public ParentReportService(ParentReportRep repository, IMapper mapper)
+        public ParentReportService(IDataRepository<ParentReport> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

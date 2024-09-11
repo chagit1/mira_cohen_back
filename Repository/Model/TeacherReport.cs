@@ -5,38 +5,66 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace Repository
 {
     public class TeacherReport
     {
-        [Key]
-        public int Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
-        [ForeignKey("Student")]
-        public int StudentId { get; set; }
-        public virtual Student Student { get; set; } // Virtual navigation property
+        [BsonElement("StudentId")]
+        [BsonIgnoreIfNull]
+        public string StudentId { get; set; }
 
+        [BsonElement("ReadingAndWritingSkills")]
+        [BsonIgnoreIfNull]
         public string ReadingAndWritingSkills { get; set; }
 
+        [BsonElement("AcademicGap")]
+        [BsonIgnoreIfNull]
         public string AcademicGap { get; set; }
 
+        [BsonElement("UnderstandingOfTheMaterial")]
+        [BsonIgnoreIfNull]
         public string UnderstandingOfTheMaterial { get; set; }
 
+        [BsonElement("Memory")]
+        [BsonIgnoreIfNull]
         public string Memory { get; set; }
 
+        [BsonElement("GeneralKnowledge")]
+        [BsonIgnoreIfNull]
         public string GeneralKnowledge { get; set; }
 
+        [BsonElement("Motivation")]
+        [BsonIgnoreIfNull]
         public string Motivation { get; set; }
 
+        [BsonElement("Vocabulary")]
+        [BsonIgnoreIfNull]
         public string Vocabulary { get; set; }
 
+        [BsonElement("AcademicAchievements")]
+        [BsonIgnoreIfNull]
         public string AcademicAchievements { get; set; }
 
+        [BsonElement("SocialAndEmotionalConduct")]
+        [BsonIgnoreIfNull]
         public string SocialAndEmotionalConduct { get; set; }
 
-        public FamilyStatusEnum FamilyStatus { get; set; } // Enum: Divorced, Married, Separated
+        [BsonElement("FamilyStatus")]
+        [BsonIgnoreIfNull]
+        public FamilyStatusEnum FamilyStatus { get; set; }
+        public TeacherReport(string socialAndEmotionalConduct)
+        {
+            this.SocialAndEmotionalConduct = socialAndEmotionalConduct;            
+        }
     }
+
 
     public enum FamilyStatusEnum
     {
@@ -44,4 +72,5 @@ namespace Repository
         Married,
         Separated
     }
+
 }
