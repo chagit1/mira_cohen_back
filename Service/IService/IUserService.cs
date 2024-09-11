@@ -11,8 +11,8 @@ namespace Service
     {
         Task<List<UserEntities>> GetAllAsync();
         Task<UserEntities> GetByIdAsync(string id);
-        Task<UserEntities> AddAsync(UserEntities dto);
-        Task<UserEntities> UpdateAsync(UserEntities dto);
+        Task<UserEntities> AddAsync(UserEntities user);
+        Task<UserEntities> UpdateAsync(UserEntities user);
         Task<bool> DeleteAsync(string id); 
     }
 }

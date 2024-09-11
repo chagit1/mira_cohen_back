@@ -14,7 +14,7 @@ namespace Service
         private readonly IDataRepository<User> _repository;
         private readonly IMapper _mapper;
 
-        public UserService(UserRep repository, IMapper mapper)
+        public UserService(IDataRepository<User> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -34,10 +34,11 @@ namespace Service
 
         public async Task<UserEntities> AddAsync(UserEntities user)
         {
+
             var userRep = _mapper.Map<User>(user);
             var addedUser = await _repository.AddAsync(userRep);
-            return _mapper.Map<UserEntities>(addedUser);
-        }
+            return _mapper.Map<UserEntities>(addedUser); 
+        }          
 
         public async Task<UserEntities> UpdateAsync(UserEntities user)
         {

@@ -8,7 +8,7 @@ namespace Entities
 {
     public class UserEntities
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
@@ -16,6 +16,18 @@ namespace Entities
 
         public string Password { get; set; }
 
-        public string Role { get; set; } // String representation of UserRole enum
+        public UserRoleEntities? Role { get; set; } // String representation of UserRole enum
+
+        public UserEntities(string name, string email, string password)
+        {
+            this.Name = name;
+            this.Email = email;
+            this.Password = password;
+        }
+    }
+    public enum UserRoleEntities
+    {
+        Manager,
+        Client
     }
 }

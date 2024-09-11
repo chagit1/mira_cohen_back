@@ -5,46 +5,84 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace Repository
 {
-    public class Student
+    public class Student : IEntityRep
     {
-        [Key]
-        public int Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
+        [BsonElement("FirstName")]
+        [BsonIgnoreIfNull]
         public string FirstName { get; set; }
 
+        [BsonElement("LastName")]
+        [BsonIgnoreIfNull]
         public string LastName { get; set; }
 
+        [BsonElement("BirthDate")]
+        [BsonIgnoreIfNull]
         public DateTime BirthDate { get; set; }
 
-        public string IdNumber { get; set; }
+        [BsonElement("TZ")]
+        [BsonIgnoreIfNull]
+        public string TZ { get; set; }
 
+        [BsonElement("MotherName")]
+        [BsonIgnoreIfNull]
         public string MotherName { get; set; }
 
+        [BsonElement("FatherName")]
+        [BsonIgnoreIfNull]
         public string FatherName { get; set; }
 
+        [BsonElement("FatherPhone")]
+        [BsonIgnoreIfNull]
         public string FatherPhone { get; set; }
 
+        [BsonElement("MotherPhone")]
+        [BsonIgnoreIfNull]
         public string MotherPhone { get; set; }
 
+        [BsonElement("HomePhone")]
+        [BsonIgnoreIfNull]
         public string HomePhone { get; set; }
 
+        [BsonElement("Address")]
+        [BsonIgnoreIfNull]
         public string Address { get; set; }
 
-        [ForeignKey("Institution")]
-        public int InstitutionId { get; set; }
-        public virtual Institution Institution { get; set; } // Virtual navigation property
+        [BsonElement("InstitutionId")]
+        [BsonIgnoreIfNull]
+        public string InstitutionId { get; set; }
+        //public virtual Institution Institution { get; set; } // Virtual navigation property
 
+        [BsonElement("FamilyPosition")]
+        [BsonIgnoreIfNull]
         public int FamilyPosition { get; set; }
 
+        [BsonElement("GradeLevel")]
+        [BsonIgnoreIfNull]
         public string GradeLevel { get; set; }
 
+        public Student()
+        {
+            
+        }
+        public Student(string firstName, string lastName)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+        }
         // Navigation Properties
-        public virtual ICollection<EligibilityAndCharacterization> Eligibilities { get; set; } // A student can have multiple eligibilities
-        public virtual ICollection<HelpHours> AssistanceHours { get; set; } // A student can have multiple assistance hours
-        public virtual ParentReport ParentReport { get; set; } // A student can have one parent report
-        public virtual TeacherReport TeacherReport { get; set; } // A student can have one teacher report
+        //    public virtual ICollection<EligibilityAndCharacterization> Eligibilities { get; set; } // A student can have multiple eligibilities
+        //    public virtual ICollection<HelpHours> AssistanceHours { get; set; } // A student can have multiple assistance hours
+        //    public virtual ParentReport ParentReport { get; set; } // A student can have one parent report
+        //    public virtual TeacherReport TeacherReport { get; set; } // A student can have one teacher report
+        //}
     }
 }
