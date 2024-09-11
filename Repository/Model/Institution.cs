@@ -17,7 +17,6 @@ namespace Repository
         public string Id { get; set; }
 
         [BsonElement("User")]
-        [BsonIgnoreIfNull]
         public User User { get; set; }
 
         [BsonElement("InstitutionName")]

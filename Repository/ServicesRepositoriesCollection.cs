@@ -26,7 +26,7 @@ namespace Repository
         }
         public static string ToStringProperties<T>(this T obj)
         {
-            string str = "";//קבלת רשימת המאפיינים של העצם
+            string str = "";
             foreach (var item in obj.GetType().GetProperties())
             {
                 str += item.Name;

@@ -10,7 +10,7 @@ namespace Entities
 {
     public class ParentReportEntities
     {
-        public string Id { get; set; }
+        public string ParentReportId { get; set; }
 
         public string StudentId { get; set; }
         
@@ -53,9 +53,6 @@ namespace Entities
         public string CurrentEmotionalGap { get; set; }
 
         public string CurrentCulturalAndLeisureGap { get; set; }
-        public ParentReportEntities()
-        {
-            this.AcademicDifficulties = "rgdrg";
-        }
+
     }
 }

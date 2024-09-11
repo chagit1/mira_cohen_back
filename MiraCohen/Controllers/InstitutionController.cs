@@ -33,13 +33,13 @@ namespace MiraCohen.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add(InstitutionEntities institution)
+        public async Task<IActionResult> Add(InstitutionEntities institution)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var id = _institutionService.AddAsync(institution);
+            var id = await _institutionService.AddAsync(institution);
             return Ok(id);
         }
 

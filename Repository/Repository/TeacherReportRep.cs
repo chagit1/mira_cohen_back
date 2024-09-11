@@ -22,30 +22,29 @@ namespace Repository
 
         }
         public async Task<List<TeacherReport>> GetAllAsync()
-    {
-        return await _context.TeacherReports.Find(teacherReport => true).ToListAsync();
-    }
+        {
+            return await _context.TeacherReports.Find(teacherReport => true).ToListAsync();
+        }
 
-    public async Task<TeacherReport> GetByIdAsync(string id)
-    {
-        return await _context.TeacherReports.Find<TeacherReport>(teacherReport => teacherReport.Id == id).FirstOrDefaultAsync();
-    }
+        public async Task<TeacherReport> GetByIdAsync(string id)
+        {
+            return await _context.TeacherReports.Find<TeacherReport>(teacherReport => teacherReport.Id == id).FirstOrDefaultAsync();
+        }
 
-    public async Task<TeacherReport> AddAsync(TeacherReport teacherReport)
-    {
-            if (teacherReport == null) throw new ArgumentNullException(nameof(teacherReport)); 
-            teacherReport.Id = ObjectId.GenerateNewId().ToString();
+        public async Task<TeacherReport> AddAsync(TeacherReport teacherReport)
+        {
             if (teacherReport == null) throw new ArgumentNullException(nameof(teacherReport));
+            teacherReport.Id = ObjectId.GenerateNewId().ToString();
             await _context.TeacherReports.InsertOneAsync(teacherReport);
-        return teacherReport;
-    }
+            return teacherReport;
+        }
 
-    public async Task<TeacherReport> UpdateAsync(TeacherReport teacherReport)
-    {
-            if (teacherReport == null) throw new ArgumentNullException(nameof(teacherReport)); 
+        public async Task<TeacherReport> UpdateAsync(TeacherReport teacherReport)
+        {
+            if (teacherReport == null) throw new ArgumentNullException(nameof(teacherReport));
             await _context.TeacherReports.ReplaceOneAsync(u => u.Id == teacherReport.Id, teacherReport);
-        return teacherReport;
-    }
+            return teacherReport;
+        }
 
         public async Task<bool> DeleteAsync(string id)
         {
