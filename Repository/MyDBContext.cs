@@ -93,21 +93,7 @@ namespace Repository
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            // ל-MongoDB אין "שינויים לא נשמרים" כמו ב-EF, כך שהמתודה הזו יכולה להיות פשוטה או להשאיר אותה ריקה
             return Task.FromResult(1);
         }
     }
-    //   
-
-    //    public IMongoCollection<T> GetCollection<T>()
-    //    {
-    //        return _database.GetCollection<T>(typeof(T).Name);
-    //    }
-
-    //=> _database.GetCollection<User>("Users");
-
-
-
-
-
 }

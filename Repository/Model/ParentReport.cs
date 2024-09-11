@@ -10,11 +10,11 @@ using MongoDB.Bson;
 
 namespace Repository
 {
-    public class ParentReport : Student
+    public class ParentReport 
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string ParentReportId { get; set; }
 
         [BsonElement("StudentId")]
         [BsonIgnoreIfNull]

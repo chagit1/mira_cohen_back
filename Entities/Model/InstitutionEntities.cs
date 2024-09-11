@@ -12,7 +12,7 @@ namespace Entities
     {
         public string Id { get; set; }
 
-        public UserEntities User { get; set; }
+        public UserEntities? User { get; set; }
 
         public string InstitutionName { get; set; }
 

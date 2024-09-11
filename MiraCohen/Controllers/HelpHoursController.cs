@@ -33,13 +33,13 @@ namespace MiraCohen.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add(HelpHoursEntities helpHours)
+        public async Task<IActionResult> Add(HelpHoursEntities helpHours)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var id = _helpHoursService.AddAsync(helpHours);
+            var id = await _helpHoursService.AddAsync(helpHours);
             return Ok(id);
         }
 

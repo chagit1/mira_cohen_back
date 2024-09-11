@@ -12,18 +12,9 @@ namespace Repository
     public class HelpHoursRep : StudentRep<HelpHours>
     {
         public HelpHoursRep(IContext context)
-       : base(context) // פשוט להעביר את ה-context למחלקת הבסיס
+        : base(context)
         {
         }
-        //public HelpHoursRep(IOptions<MiraCohenDatabaseSettings> miraCohenDatabaseSettings):base(miraCohenDatabaseSettings)
-        //{
-        //var mongoClient = new MongoClient(miraCohenDatabaseSettings.Value.ConnectionString);
-        //var mongoDatabase = mongoClient.GetDatabase(miraCohenDatabaseSettings.Value.DatabaseName);
-        //_collection = mongoDatabase.GetCollection<HelpHours>(miraCohenDatabaseSettings.Value.HelpHoursCollectionName);
-        //}
-
-
-
 
     }
 }

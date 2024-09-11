@@ -12,11 +12,11 @@ namespace Repository
     {
         [BsonElement("Diagnosis")]
         [BsonIgnoreIfNull]
-        public byte[] Diagnosis { get; set; }
+        public byte[]? Diagnosis { get; set; }
 
         [BsonElement("MedicalDocuments")]
         [BsonIgnoreIfNull]
-        public byte[] MedicalDocuments { get; set; }
+        public byte[]? MedicalDocuments { get; set; }
 
         [BsonElement("SyncWithDiagnosis")]
         [BsonIgnoreIfNull]
@@ -40,23 +40,15 @@ namespace Repository
 
         [BsonElement("ParentReport")]
         [BsonIgnoreIfNull]
-        public ParentReport ParentReport { get; set; }
+        public ParentReport? ParentReport { get; set; }
 
         [BsonElement("TeacherReport")]
         [BsonIgnoreIfNull]
-        public TeacherReport TeacherReport { get; set; }
-        public EligibilityAndCharacterization(TeacherReport teacherReport, ParentReport parentReport,
-            bool uploed, bool syncWithDiagnosis, bool managerSignature, bool teacherSignature, bool supervisorSignature)
-        {
-            this.ParentReport = parentReport;
-            this.TeacherReport = teacherReport;
-            this.ManagerSignature = managerSignature;
-            this.TeacherSignature = teacherSignature;   
-            this.SupervisorSignature = supervisorSignature;
-            this.ManagerSignature = managerSignature;
-            this.SyncWithDiagnosis = syncWithDiagnosis;
-            this.UploadedToShiluvit = uploed;
+        public TeacherReport? TeacherReport { get; set; }
 
-        }
+        public EligibilityAndCharacterization()
+        {
+            
+        }     
     }
 }
