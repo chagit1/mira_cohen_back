@@ -26,9 +26,9 @@ namespace Service
             return _mapper.Map<List<ParentReportEntities>>(parentReports);
         }
 
-        public async Task<ParentReportEntities> GetByIdAsync(string id)
+        public async Task<ParentReportEntities> GetByIdAsync(string parentReportId)
         {
-            var parentReport = await _repository.GetByIdAsync(id);
+            var parentReport = await _repository.GetByIdAsync(parentReportId);
             return _mapper.Map<ParentReportEntities>(parentReport);
         }
 
@@ -46,9 +46,9 @@ namespace Service
             return _mapper.Map<ParentReportEntities>(updatedParentReport);
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string parentReportId)
         {
-            return await _repository.DeleteAsync(id);
+            return await _repository.DeleteAsync(parentReportId);
         }
     }
 }

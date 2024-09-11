@@ -21,11 +21,13 @@ namespace MiraCohen.Controllers
         {
             return await _eligibilityAndCharacterizationService.GetAllAsync();
         }
+
         [HttpGet("GetById/{eligibilityAndCharacterizationId}")]
         public async Task<EligibilityAndCharacterizationEntities> GetById(string eligibilityAndCharacterizationId)
         {
             return await _eligibilityAndCharacterizationService.GetByIdAsync(eligibilityAndCharacterizationId);
         }
+
         [HttpDelete("Delete/{eligibilityAndCharacterizationId}")]
         public async Task<bool> Delete(string eligibilityAndCharacterizationId)
         {
@@ -33,13 +35,13 @@ namespace MiraCohen.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add(EligibilityAndCharacterizationEntities eligibilityAndCharacterization)
+        public async Task<IActionResult> Add(EligibilityAndCharacterizationEntities eligibilityAndCharacterization)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var id = _eligibilityAndCharacterizationService.AddAsync(eligibilityAndCharacterization);
+            var id = await _eligibilityAndCharacterizationService.AddAsync(eligibilityAndCharacterization);
             return Ok(id);
         }
 

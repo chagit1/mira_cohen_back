@@ -35,7 +35,6 @@ namespace Repository
         {
             if (user == null) throw new ArgumentNullException(nameof(user)); 
             user.Id = ObjectId.GenerateNewId().ToString();
-            //if (user == null) throw new ArgumentNullException(nameof(user));
             await _context.Users.InsertOneAsync(user);
             return user;
         }

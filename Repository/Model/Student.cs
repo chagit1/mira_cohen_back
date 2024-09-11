@@ -59,7 +59,6 @@ namespace Repository
         [BsonElement("InstitutionId")]
         [BsonIgnoreIfNull]
         public string InstitutionId { get; set; }
-        //public virtual Institution Institution { get; set; } // Virtual navigation property
 
         [BsonElement("FamilyPosition")]
         [BsonIgnoreIfNull]
@@ -77,12 +76,6 @@ namespace Repository
         {
             this.FirstName = firstName;
             this.LastName = lastName;
-        }
-        // Navigation Properties
-        //    public virtual ICollection<EligibilityAndCharacterization> Eligibilities { get; set; } // A student can have multiple eligibilities
-        //    public virtual ICollection<HelpHours> AssistanceHours { get; set; } // A student can have multiple assistance hours
-        //    public virtual ParentReport ParentReport { get; set; } // A student can have one parent report
-        //    public virtual TeacherReport TeacherReport { get; set; } // A student can have one teacher report
-        //}
+        }       
     }
 }
