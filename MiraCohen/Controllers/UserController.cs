@@ -50,21 +50,15 @@ namespace MiraCohen.Controllers
         {
             return await _userService.UpdateAsync(user);
         }
-        //התחברות
         [HttpPost("login")]
         public async Task<IActionResult> Login(string email, string password)
         {
-            // נסה לאמת את המשתמש
             var user = await _userService.AuthenticateAsync(email, password);
 
-            // אם המשתמש לא נמצא או האימות נכשל, החזר Unauthorized
             if (user == null)
                 return Unauthorized();
 
-            // צור את הטוקן
             var token = _jwtTokenService.GenerateToken(user);
-
-            // החזר את הטוקן ואת פרטי המשתמש
             return Ok(new
             {
                 Token = token,

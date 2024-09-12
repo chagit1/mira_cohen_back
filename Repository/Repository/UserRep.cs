@@ -35,10 +35,8 @@ namespace Repository
         {
             if (user == null) throw new ArgumentNullException(nameof(user)); 
             user.Id = ObjectId.GenerateNewId().ToString();
-            //אם הכניס סיסמה
             if (!string.IsNullOrEmpty(user.Password))
             {
-                //מצפין את הסיסמה
                 user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             }
             else
