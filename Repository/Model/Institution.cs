@@ -49,7 +49,7 @@ namespace Repository
 
         [BsonElement("Students")]
         [BsonIgnoreIfNull]
-        public List<Student> Students { get; set; }
+        public List<Student>? Students { get; set; }
         public Institution(string inspectorName)
         {
             this.InspectorName = inspectorName;
