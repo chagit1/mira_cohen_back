@@ -32,11 +32,27 @@ namespace Repository
             return await _Students.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task<T> AddAsync(T entity) 
+        public async Task<T> AddAsync(T entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
             entity.Id = ObjectId.GenerateNewId().ToString();
             await _Students.InsertOneAsync(entity);
+
+            if (entity is Student student)
+            {
+                var institution = await _context.Institutions
+                    .Find(i => i.Id == student.InstitutionId)
+                    .FirstOrDefaultAsync();
+
+                if (institution != null)
+                {
+                    institution.Students.Add(student);
+
+                    var filter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
+                    await _context.Institutions.ReplaceOneAsync(filter, institution);
+                }
+            }
+
             return entity;
         }
 
@@ -46,17 +62,62 @@ namespace Repository
             var id = new ObjectId(GetIdValue(entity));
             var filter = Builders<T>.Filter.Eq("Id", id);
             var result = await _Students.ReplaceOneAsync(filter, entity);
+
+            if (entity is Student student)
+            {
+                var institution = await _context.Institutions.Find(i => i.Id == student.InstitutionId).FirstOrDefaultAsync();
+
+                if (institution != null)
+                {
+                    var existingStudent = institution.Students.FirstOrDefault(s => s.Id == student.Id);
+
+                    if (existingStudent != null)
+                    {
+                        var index = institution.Students.IndexOf(existingStudent);
+                        institution.Students[index] = student;
+
+                        var institutionFilter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
+                        await _context.Institutions.ReplaceOneAsync(institutionFilter, institution);
+                    }
+                }
+            }
+
             return result.ModifiedCount > 0 ? entity : default(T);
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string studentId)
         {
-            var filter = Builders<T>.Filter.Eq("Id", id);
+            var student = await _Students.Find(s => s.Id == studentId).FirstOrDefaultAsync();
 
-            var result = await _Students.DeleteOneAsync(filter);
-            return result.DeletedCount > 0;
+            if (student == null)
+            {
+                throw new Exception($"Student with ID {studentId} not found.");
+            }
+
+            var filter = Builders<T>.Filter.Eq(e => e.Id, studentId);
+            var deleteResult = await _Students.DeleteOneAsync(filter);
+
+            if (deleteResult.DeletedCount == 0)
+            {
+                throw new Exception($"Failed to delete student with ID {studentId}.");
+            }
+
+            var institution = await _context.Institutions.Find(i => i.Id == student.InstitutionId).FirstOrDefaultAsync();
+            if (institution != null)
+            {
+                var existingStudent = institution.Students.FirstOrDefault(s => s.Id == studentId);
+                if (existingStudent != null)
+                {
+                    institution.Students.Remove(existingStudent);
+
+                    var institutionFilter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
+                    await _context.Institutions.ReplaceOneAsync(institutionFilter, institution);
+                }
+            }
+
+            return deleteResult.DeletedCount > 0;
         }
-    
+
         private string GetIdValue(T entity)
         {
             var propertyInfo = entity.GetType().GetProperty("Id");
