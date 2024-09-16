@@ -50,7 +50,7 @@ namespace MiraCohen.Controllers
         {
             return await _userService.UpdateAsync(user);
         }
-        [HttpPost("login")]
+        [HttpGet("login/{email}/{password}")]
         public async Task<IActionResult> Login(string email, string password)
         {
             var user = await _userService.AuthenticateAsync(email, password);
@@ -59,12 +59,23 @@ namespace MiraCohen.Controllers
                 return Unauthorized();
 
             var token = _jwtTokenService.GenerateToken(user);
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,  // עוזר להגן על העוגיה כך שלא תהיה נגישה מ-JavaScript.
+                Secure = true,    // מבטיח שהעוגיה תשלח רק דרך HTTPS (בייצור יש להשתמש בזה).
+                //SameSite = SameSite.Strict, // מונע שליחת העוגיה בבקשות צד שלישי.
+                Expires = DateTime.UtcNow.AddMinutes(60) // פקיעת תוקף העוגיה.
+            };
+            Response.Cookies.Append("jwtToken", token, cookieOptions);
+
             return Ok(new
             {
                 Token = token,
                 User = new
                 {
                     user.Id,
+                    user.Name,
                     user.Email,
                     user.Password,
                     user.Role,

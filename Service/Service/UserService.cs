@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BCrypt.Net;
 using MongoDB.Driver;
+using Microsoft.VisualBasic;
 
 namespace Service
 {
@@ -61,16 +62,20 @@ namespace Service
                 throw new ArgumentException("Email cannot be null or empty", nameof(email));
 
             var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+
             return await _users.Find(filter).FirstOrDefaultAsync();
         }
+
         public async Task<User> AuthenticateAsync(string email, string password)
         {
             var user = await GetByEmailAsync(email);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
-                return null;
 
-            return user;
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
+                return null; 
+
+            return user; 
         }
+
     }
 
 }
