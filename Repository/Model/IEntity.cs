@@ -9,6 +9,7 @@ namespace Repository
     public interface IEntityRep
     {
         string Id { get; set; }
+        string InstitutionId { get; set; }
 
     }
 }
