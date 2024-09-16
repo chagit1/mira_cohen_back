@@ -28,11 +28,7 @@ namespace Entities
 
         public string InspectorName { get; set; }
 
-        public List<StudentEntities> Students { get; set; }
-        public InstitutionEntities(string inspectorName)
-        {
-            this.InspectorName = inspectorName;
-            Students = new List<StudentEntities>();
-        }
+        public List<StudentEntities>? Students { get; set; }
+       
     }
 }

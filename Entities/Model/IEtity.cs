@@ -9,6 +9,7 @@ namespace Entities
     public interface IEtity
     {
         string Id { get; set; }
+        string InstitutionId { get; set; }
 
     }
 }
