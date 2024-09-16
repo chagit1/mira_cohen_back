@@ -35,6 +35,15 @@ namespace Repository
         {
             if (user == null) throw new ArgumentNullException(nameof(user)); 
             user.Id = ObjectId.GenerateNewId().ToString();
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            }
+            else
+            {
+                throw new ArgumentException("Password cannot be null or empty.", nameof(user.Password));
+            }
+
             await _context.Users.InsertOneAsync(user);
             return user;
         }
