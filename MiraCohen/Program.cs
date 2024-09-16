@@ -17,6 +17,7 @@ builder.Services.AddSingleton<MiraCohenDatabaseSettings>(sp =>
 
 builder.Services.AddSingleton<IContext, MyDBContext>();
 builder.Services.AddSingleton<JwtTokenService>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -39,6 +40,16 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 builder.Services.AddSwaggerGen();
 builder.Services.AddServices();
 
@@ -49,7 +60,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
