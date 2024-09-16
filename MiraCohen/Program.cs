@@ -14,7 +14,17 @@ builder.Services.AddSingleton<MiraCohenDatabaseSettings>(sp =>
 builder.Services.AddSingleton<IContext, MyDBContext>();
 
 builder.Services.AddControllers();
- 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddServices();
@@ -24,6 +34,9 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
