@@ -23,7 +23,9 @@ namespace Service
             CreateMap<FamilyStatusEnum, FamilyStatusEnumEntities>().ReverseMap();
             CreateMap<Student, StudentEntities>().ReverseMap();
             CreateMap<ParentReport, ParentReportEntities>().ReverseMap();
-            CreateMap<Institution, InstitutionEntities>().ReverseMap();
+            CreateMap<InstitutionEntities, Institution>()
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.UserId));
+
             CreateMap<HelpHours, HelpHoursEntities>().ReverseMap();
             CreateMap<EligibilityAndCharacterization, EligibilityAndCharacterizationEntities>().ReverseMap();
             

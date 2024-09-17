@@ -1,6 +1,7 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repository;
 using Service;
 
 namespace MiraCohen.Controllers
@@ -48,5 +49,24 @@ namespace MiraCohen.Controllers
         {
             return await _institutionService.UpdateAsync(institution);
         }
+        [HttpPost("AddInstitution")]
+        public async Task<Institution> AddInstitutionAsync([FromBody] InstitutionEntities institutionDto)
+        {
+            //// המרת DTO לאובייקט Institution
+            //var institution = new InstitutionEntities
+            //{
+            //    UserId = institutionDto.UserId, // הנחה שהוספת מאפיין כזה אם נדרש
+            //    InstitutionName = institutionDto.InstitutionName,
+            //    Symbol = institutionDto.Symbol,
+            //    ManagerName = institutionDto.ManagerName,
+            //    ContactPerson = institutionDto.ContactPerson,
+            //    ContactPhone = institutionDto.ContactPhone,
+            //    ContactEmail = institutionDto.ContactEmail,
+            //    InspectorName = institutionDto.InspectorName
+            //};
+
+            return await _institutionService.AddInstitutionAsync(institutionDto);
+        }
+
     }
 }

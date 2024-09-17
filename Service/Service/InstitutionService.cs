@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Service
@@ -12,11 +13,14 @@ namespace Service
     public class InstitutionService : IInstitutionService
     {
         private readonly IDataRepository<Institution> _repository;
+        private readonly IDataRepository<User> _UserRepository;
+
         private readonly IMapper _mapper;
 
-        public InstitutionService(IDataRepository<Institution> repository, IMapper mapper)
+        public InstitutionService(IDataRepository<Institution> repository, IDataRepository<User> UserRepository, IMapper mapper)
         {
             _repository = repository;
+            _UserRepository = UserRepository;
             _mapper = mapper;
         }
 
@@ -49,6 +53,42 @@ namespace Service
         public async Task<bool> DeleteAsync(string id)
         {
             return await _repository.DeleteAsync(id);
+        }
+
+        public async Task<Institution> AddInstitutionAsync(InstitutionEntities institutionDto)
+        {
+            // בדוק אם המשתמש קיים
+            var user = await _UserRepository.GetByIdAsync(institutionDto.UserId);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            // יצירת אובייקט Institution עם הנתונים מה-DTO
+            var institution = new Institution(institutionDto.InspectorName)
+            {
+                InstitutionName = institutionDto.InstitutionName,
+                Symbol = institutionDto.Symbol,
+                ManagerName = institutionDto.ManagerName,
+                ContactPerson = institutionDto.ContactPerson,
+                ContactPhone = institutionDto.ContactPhone,
+                ContactEmail = institutionDto.ContactEmail,
+                User = user
+            };
+
+            // הוספת המוסד לרשימת המוסדות של המשתמש
+            if (user.Institutions == null)
+            {
+                user.Institutions = new List<Institution>();
+            }
+
+            user.Institutions.Add(institution);
+            await _repository.AddAsync(institution);
+            // עדכון המשתמש
+            await _UserRepository.UpdateAsync(user);
+
+            return institution;
         }
     }
 }

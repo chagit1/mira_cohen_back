@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Service
         Task<InstitutionEntities> AddAsync(InstitutionEntities dto);
         Task<InstitutionEntities> UpdateAsync(InstitutionEntities dto);
         Task<bool> DeleteAsync(string id);
+        Task<Institution> AddInstitutionAsync(InstitutionEntities institutionDto);
     }
 }
