@@ -1,6 +1,10 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Repository;
 using Service;
 
 namespace MiraCohen.Controllers
@@ -9,38 +13,51 @@ namespace MiraCohen.Controllers
     [ApiController]
     public class HelpHoursController : ControllerBase
     {
+        private readonly IStudentService _studentService;
         private readonly IHelpHoursService _helpHoursService;
 
-        public HelpHoursController(IHelpHoursService helpHoursService)
+
+        public HelpHoursController(IStudentService studentService, IHelpHoursService helpHoursService)
         {
+            _studentService = studentService;
             _helpHoursService = helpHoursService;
         }
 
         [HttpGet]
         public async Task<List<HelpHoursEntities>> GetAll()
-        {
+        {            
             return await _helpHoursService.GetAllAsync();
         }
+        [HttpGet("GetAllStudent")]
+        public async Task<List<StudentEntities>> GetAllStudent()
+        {
+           List<StudentEntities> a = await _studentService.GetAllAsync();
+            return a;
+        }
+
+      
         [HttpGet("GetById/{helpHoursId}")]
         public async Task<HelpHoursEntities> GetById(string helpHoursId)
         {
-            return await _helpHoursService.GetByIdAsync(helpHoursId);
+            return  await _helpHoursService.GetByIdAsync(helpHoursId);
         }
+
         [HttpDelete("Delete/{helpHoursId}")]
         public async Task<bool> Delete(string helpHoursId)
         {
-            return await _helpHoursService.DeleteAsync(helpHoursId);
+            return await _studentService.DeleteAsync(helpHoursId);
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add(HelpHoursEntities helpHours)
+        public async Task<ActionResult<HelpHoursEntities>> Add(HelpHoursEntities helpHours)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var id = await _helpHoursService.AddAsync(helpHours);
-            return Ok(id);
+
+            var addedEntity = await _studentService.AddAsync(helpHours);
+            return CreatedAtAction(nameof(GetById), new { helpHoursId = addedEntity.Id }, addedEntity);
         }
 
         [HttpPut("Update")]

@@ -10,7 +10,10 @@ namespace Entities
 {
     public class InstitutionEntities
     {
-        public string UserId { get; set; }
+        public string Id { get; set; }
+
+        public string? UserId { get; set; }
+
         public string InstitutionName { get; set; }
         public string Symbol { get; set; }
         public string ManagerName { get; set; }

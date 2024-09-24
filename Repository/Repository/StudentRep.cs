@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Repository;
 using System;
@@ -9,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class StudentRep<T> : IDataRepository<T> where T : IEntityRep
+    public class StudentRep : IDataRepository<Student>
     {
-        protected readonly IMongoCollection<T> _Students;
 
         private readonly IContext _context;
 
@@ -19,93 +19,71 @@ namespace Repository
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _context.CreateCollectionsIfNotExists().Wait();
-            _Students = (IMongoCollection<T>)_context.GetCollection<T>(typeof(T).Name);
         }
-        public async Task<List<T>> GetAllAsync()
+        public async Task<List<Student>> GetAllAsync()
         {
-            return await _Students.Find(e => true).ToListAsync();
-        }
-
-        public async Task<T> GetByIdAsync(string id)
-        {
-            var filter = Builders<T>.Filter.Eq("Id", id);
-            return await _Students.Find(filter).FirstOrDefaultAsync();
+            return await _context.Students.Find(Builders<Student>.Filter.Empty).ToListAsync();
         }
 
-        public async Task<T> AddAsync(T entity)
+        public async Task<Student> GetByIdAsync(string id)
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
-            entity.Id = ObjectId.GenerateNewId().ToString();
-            await _Students.InsertOneAsync(entity);
+            return await _context.Students.Find<Student>(student => student.Id == id).FirstOrDefaultAsync();          
+        }
 
-            if (entity is Student student)
-            {
-                var institution = await _context.Institutions
+        public async Task<Student> AddAsync(Student student)
+        {
+            if (student == null) throw new ArgumentNullException(nameof(student));
+            student.Id = ObjectId.GenerateNewId().ToString();
+
+            var institution = await _context.Institutions
                     .Find(i => i.Id == student.InstitutionId)
                     .FirstOrDefaultAsync();
 
-                if (institution != null)
-                {
-                    institution.Students.Add(student);
+            if (institution != null)
+            {
+                institution.Students.Add(student);
 
-                    var filter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
-                    await _context.Institutions.ReplaceOneAsync(filter, institution);
-                }
+                var filter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
+                await _context.Institutions.ReplaceOneAsync(filter, institution);
             }
-
-            return entity;
+            await _context.Students.InsertOneAsync(student);
+            return student;
         }
 
-        public async Task<T> UpdateAsync(T entity)
+        public async Task<Student> UpdateAsync(Student entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
-            var id = new ObjectId(GetIdValue(entity));
-            var filter = Builders<T>.Filter.Eq("Id", id);
-            var result = await _Students.ReplaceOneAsync(filter, entity);
+            var filter = Builders<Student>.Filter.Eq("Id", entity.Id);
+            var result = await _context.Students.ReplaceOneAsync(filter, entity);
+           
+           
+            var institution = await _context.Institutions.Find(i => i.Id == entity.InstitutionId).FirstOrDefaultAsync();
 
-            if (entity is Student student)
+            if (institution != null)
             {
-                var institution = await _context.Institutions.Find(i => i.Id == student.InstitutionId).FirstOrDefaultAsync();
+                var existingStudent = institution.Students.FirstOrDefault(s => s.Id == entity.Id);
 
-                if (institution != null)
+                if (existingStudent != null)
                 {
-                    var existingStudent = institution.Students.FirstOrDefault(s => s.Id == student.Id);
+                    var index = institution.Students.IndexOf(existingStudent);
+                    institution.Students[index] = entity;
 
-                    if (existingStudent != null)
-                    {
-                        var index = institution.Students.IndexOf(existingStudent);
-                        institution.Students[index] = student;
-
-                        var institutionFilter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
-                        await _context.Institutions.ReplaceOneAsync(institutionFilter, institution);
-                    }
+                    var institutionFilter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
+                    await _context.Institutions.ReplaceOneAsync(institutionFilter, institution);
                 }
             }
-
-            return result.ModifiedCount > 0 ? entity : default(T);
+            return result.ModifiedCount > 0 ? entity : null;
         }
-
-        public async Task<bool> DeleteAsync(string studentId)
+        public async Task<bool> DeleteAsync(string id)
         {
-            var student = await _Students.Find(s => s.Id == studentId).FirstOrDefaultAsync();
-
-            if (student == null)
-            {
-                throw new Exception($"Student with ID {studentId} not found.");
-            }
-
-            var filter = Builders<T>.Filter.Eq(e => e.Id, studentId);
-            var deleteResult = await _Students.DeleteOneAsync(filter);
-
-            if (deleteResult.DeletedCount == 0)
-            {
-                throw new Exception($"Failed to delete student with ID {studentId}.");
-            }
+            var filter = Builders<Student>.Filter.Eq("Id", id);
+            var result = await _context.Students.DeleteOneAsync(filter);
+            var student = await _context.Students.Find(s => s.Id == id).FirstOrDefaultAsync();
 
             var institution = await _context.Institutions.Find(i => i.Id == student.InstitutionId).FirstOrDefaultAsync();
             if (institution != null)
             {
-                var existingStudent = institution.Students.FirstOrDefault(s => s.Id == studentId);
+                var existingStudent = institution.Students.FirstOrDefault(s => s.Id == id);
                 if (existingStudent != null)
                 {
                     institution.Students.Remove(existingStudent);
@@ -114,18 +92,7 @@ namespace Repository
                     await _context.Institutions.ReplaceOneAsync(institutionFilter, institution);
                 }
             }
-
-            return deleteResult.DeletedCount > 0;
-        }
-
-        private string GetIdValue(T entity)
-        {
-            var propertyInfo = entity.GetType().GetProperty("Id");
-            if (propertyInfo == null)
-            {
-                throw new InvalidOperationException("Entity does not have an 'Id' property");
-            }
-            return propertyInfo.GetValue(entity)?.ToString();
+            return result.DeletedCount > 0;
         }
     }
 }

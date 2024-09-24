@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public interface IHelpHoursService : IStudentService<HelpHoursEntities>
+    public interface IHelpHoursService : IStudentService
     {
+        Task<List<HelpHoursEntities>> GetAllAsync();
+        Task<HelpHoursEntities> GetByIdAsync(string id);
+        Task<HelpHoursEntities> UpdateAsync(HelpHoursEntities helpHours);
     }
 }

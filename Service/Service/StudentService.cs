@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entities;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -8,46 +9,79 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public class StudentService<T, TDTO> : IStudentService<TDTO>
-    {        
-            protected readonly IDataRepository<T> _repository;
-            protected readonly IMapper _mapper;
+    public class StudentService : IStudentService
+    {
+        protected readonly IDataRepository<Student> _repository;
+        protected readonly IMapper _mapper;
 
-            public StudentService(IDataRepository<T> repository, IMapper mapper)
-            {
-                _repository = repository;
-                _mapper = mapper;
-            }
-
-            public async Task<List<TDTO>> GetAllAsync()
-            {
-                var entities = await _repository.GetAllAsync();
-                return _mapper.Map<List<TDTO>>(entities);
-            }
-
-            public async Task<TDTO> GetByIdAsync(string id)
-            {
-                var entity = await _repository.GetByIdAsync(id);
-                return _mapper.Map<TDTO>(entity);
-            }
-
-            public async Task<TDTO> AddAsync(TDTO dto)
-            {
-                var entity = _mapper.Map<T>(dto);
-                var addedEntity = await _repository.AddAsync(entity);
-                return _mapper.Map<TDTO>(addedEntity);
-            }
-
-            public async Task<TDTO> UpdateAsync(TDTO dto)
-            {
-                var entity = _mapper.Map<T>(dto);
-                var updatedEntity = await _repository.UpdateAsync(entity);
-                return _mapper.Map<TDTO>(updatedEntity);
-            }
-
-            public async Task<bool> DeleteAsync(string id)
-            {
-               return await _repository.DeleteAsync(id);
-            }
+        public StudentService(IDataRepository<Student> repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
         }
+
+        public async Task<List<StudentEntities>> GetAllAsync()
+        {
+            var entities = await _repository.GetAllAsync();
+
+            return _mapper.Map<List<StudentEntities>>(entities);            
+        }
+        //public async Task<List<StudentEntities>> GetAllAsync()
+        //{
+
+        //    var entities = await _repository.GetAllAsync();
+        //    var dtoList = entities.Select(entity =>
+        //    {
+        //        if (entity is HelpHours helpHours)
+        //        {
+        //            return _mapper.Map<HelpHoursEntities>(helpHours);
+        //        }
+        //        else if (entity is EligibilityAndCharacterization eligibility)
+        //        {
+        //            return _mapper.Map<EligibilityAndCharacterizationEntities>(eligibility);
+        //        }
+        //        else
+        //        {
+        //            return _mapper.Map<StudentEntities>(entity);
+        //        }
+        //    }).ToList();
+        //    return dtoList;
+        //}
+
+        public async Task<StudentEntities> GetByIdAsync(string id)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+            return _mapper.Map<StudentEntities>(entity);
+        }
+
+      
+        public async Task<StudentEntities> AddAsync(StudentEntities dto)
+        {
+            Student entity;
+            Student addedEntity;
+            if (dto is HelpHoursEntities)
+            {
+                entity = _mapper.Map<HelpHours>(dto);
+                addedEntity = await _repository.AddAsync(entity);
+                return _mapper.Map<HelpHoursEntities>(addedEntity);
+            }
+          
+            entity = _mapper.Map<EligibilityAndCharacterization>(dto);
+            addedEntity = await _repository.AddAsync(entity);
+            return _mapper.Map<EligibilityAndCharacterizationEntities>(addedEntity);         
+        }
+
+
+        public async Task<StudentEntities> UpdateAsync(StudentEntities dto)
+        {
+            var entity = _mapper.Map<Student>(dto);
+            var updatedEntity = await _repository.UpdateAsync(entity);
+            return _mapper.Map<StudentEntities>(updatedEntity);
+        }
+
+        public async Task<bool> DeleteAsync(string id)
+        {
+            return await _repository.DeleteAsync(id);
+        }
+    }
 }

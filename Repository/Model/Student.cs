@@ -8,14 +8,18 @@ using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
+using Entities;
+
 namespace Repository
 {
-    public class Student : IEntityRep
+    [BsonDiscriminator(RootClass = true)]
+    [BsonKnownTypes(typeof(EligibilityAndCharacterization), typeof(HelpHours))]
+    public class Student 
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-
+        
         [BsonElement("FirstName")]
         [BsonIgnoreIfNull]
         public string FirstName { get; set; }
@@ -58,7 +62,7 @@ namespace Repository
 
         [BsonElement("InstitutionId")]
         [BsonIgnoreIfNull]
-        public string InstitutionId { get; set; }
+        public string? InstitutionId { get; set; }
 
         [BsonElement("FamilyPosition")]
         [BsonIgnoreIfNull]
@@ -70,10 +74,11 @@ namespace Repository
 
         public Student()
         {
-            
+           this.Id = ObjectId.GenerateNewId().ToString();
         }
         public Student(string firstName, string lastName)
         {
+            
             this.FirstName = firstName;
             this.LastName = lastName;
         }       

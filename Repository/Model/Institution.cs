@@ -67,8 +67,8 @@ public class Institution
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
 
-    [BsonIgnore] // נמנעים מסריאליזציה של המשתמש כדי למנוע לולאת סיריאליזציה
-    public User User { get; set; }
+        [BsonElement("UserId")]
+        public string UserId { get; set; }
 
     [BsonElement("InstitutionName")]
     [BsonIgnoreIfNull]
@@ -98,14 +98,13 @@ public class Institution
     [BsonIgnoreIfNull]
     public string InspectorName { get; set; }
 
-    [BsonElement("Students")]
-    [BsonIgnoreIfNull]
-    public List<Student>? Students { get; set; }
-
-    public Institution(string inspectorName)
-    {
-        this.InspectorName = inspectorName;
-        Students = new List<Student>();
+        [BsonElement("Students")]
+        [BsonIgnoreIfNull]
+        public List<Student>? Students { get; set; }
+        public Institution(string inspectorName)
+        {
+            this.InspectorName = inspectorName;
+            Students = new List<Student>();
+        }
     }
 }
-

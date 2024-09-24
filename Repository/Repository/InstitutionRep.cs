@@ -36,6 +36,11 @@ namespace Repository
             institution.Id = ObjectId.GenerateNewId().ToString();
             if (institution == null) throw new ArgumentNullException(nameof(institution));
             await _context.Institutions.InsertOneAsync(institution);
+          
+            var filter = Builders<User>.Filter.Eq(u => u.Id, institution.UserId);
+            var update = Builders<User>.Update.Set(u => u.Institutions, institution);
+            await _context.Users.UpdateOneAsync(filter, update);
+
             return institution;
         }
 

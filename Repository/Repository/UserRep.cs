@@ -33,19 +33,25 @@ namespace Repository
 
         public async Task<User> AddAsync(User user)
         {
-            if (user == null) throw new ArgumentNullException(nameof(user)); 
-            user.Id = ObjectId.GenerateNewId().ToString();
-            if (!string.IsNullOrEmpty(user.Password))
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (_context.Users.Count(u => u.Email == user.Email) <= 0)
             {
-                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            }
-            else
-            {
-                throw new ArgumentException("Password cannot be null or empty.", nameof(user.Password));
+                user.Id = ObjectId.GenerateNewId().ToString();
+                if (!string.IsNullOrEmpty(user.Password))
+                {
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                }
+                else
+                {
+                    throw new ArgumentException("Password cannot be null or empty.", nameof(user.Password));
+                }
+
+                await _context.Users.InsertOneAsync(user);
+                return user;
             }
 
-            await _context.Users.InsertOneAsync(user);
-            return user;
+           throw new NotImplementedException();
+            
         }
 
         public async Task<User> UpdateAsync(User user)

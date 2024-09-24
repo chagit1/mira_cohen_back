@@ -79,9 +79,13 @@ namespace Repository
         [BsonIgnoreIfNull]
         public UserRole? Role { get; set; }
 
-        [BsonIgnore] // נמנעים מסריאליזציה של רשימת המוסדות כדי למנוע לולאת סיריאליזציה
-        public List<Institution>? Institutions { get; set; }
-        public User() { }   
+        [BsonElement("Institutions")]
+        [BsonIgnoreIfNull]
+        public Institution? Institutions { get; set; }
+        public User()
+        {
+            
+        }
         public User(string name, string email, string password)
         {
             this.Name = name;
