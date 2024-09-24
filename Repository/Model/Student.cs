@@ -15,7 +15,6 @@ namespace Repository
     [BsonDiscriminator(RootClass = true)]
     [BsonKnownTypes(typeof(EligibilityAndCharacterization), typeof(HelpHours))]
     public class Student 
-        //: IEntityRep
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

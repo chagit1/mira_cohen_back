@@ -16,14 +16,10 @@ namespace Entities
 
         public string Password { get; set; }
 
-        public UserRoleEntities? Role { get; set; } // String representation of UserRole enum
+        public UserRoleEntities? Role { get; set; }
 
-        public UserEntities(string name, string email, string password)
-        {
-            this.Name = name;
-            this.Email = email;
-            this.Password = password;
-        }
+        public InstitutionEntities? Institutions { get; set; }
+
     }
     public enum UserRoleEntities
     {

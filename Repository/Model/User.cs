@@ -37,8 +37,11 @@ namespace Repository
 
         [BsonElement("Institutions")]
         [BsonIgnoreIfNull]
-        public List<Institution>? Institutions { get; set; }
-
+        public Institution? Institutions { get; set; }
+        public User()
+        {
+            
+        }
         public User(string name, string email, string password)
         {
             this.Name = name;

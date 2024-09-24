@@ -16,8 +16,8 @@ namespace Repository
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("User")]
-        public User User { get; set; }
+        [BsonElement("UserId")]
+        public string UserId { get; set; }
 
         [BsonElement("InstitutionName")]
         [BsonIgnoreIfNull]
@@ -50,6 +50,11 @@ namespace Repository
         [BsonElement("Students")]
         [BsonIgnoreIfNull]
         public List<Student>? Students { get; set; }
+
+        public Institution()
+        {
+            Students = new List<Student>();
+        }
         public Institution(string inspectorName)
         {
             this.InspectorName = inspectorName;
