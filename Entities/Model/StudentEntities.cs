@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class StudentEntities: IEtity
+    public class StudentEntities
+        //: IEtity
     {
         public string Id { get; set; }
 
@@ -32,7 +33,7 @@ namespace Entities
 
         public string Address { get; set; }
 
-        public string InstitutionId { get; set; }
+        public string? InstitutionId { get; set; }
 
         public int FamilyPosition { get; set; }
 

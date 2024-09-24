@@ -22,9 +22,9 @@ namespace Repository
         [BsonIgnoreIfNull]
         public string AcademicAchievements { get; set; }
 
-        public HelpHours(string strengthAreas)
+        public HelpHours()
         {
-            this.StrengthAreas = strengthAreas;
+            
         }
     }
 }

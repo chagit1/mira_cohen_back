@@ -45,13 +45,13 @@ namespace Repository
             {
                 await _database.CreateCollectionAsync("Institutions");
             }
-            if (!collectionnames.Contains("Helphours"))
+            if (!collectionnames.Contains("HelpHours"))
             {
-                await _database.CreateCollectionAsync("Helphours");
+                await _database.CreateCollectionAsync("HelpHours");
             }
-            if (!collectionnames.Contains("EligibilityAndCharacterizations"))
+            if (!collectionnames.Contains("EligibilityAndCharacterization"))
             {
-                await _database.CreateCollectionAsync("EligibilityAndCharacterizations");
+                await _database.CreateCollectionAsync("EligibilityAndCharacterization");
             }
             if (!collectionnames.Contains("Students"))
             {

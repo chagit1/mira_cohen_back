@@ -18,7 +18,7 @@ namespace Service
             services.AddRepositories();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITeacherReportService, TeacherReportService>();
-            services.AddScoped<IStudentService<StudentEntities>, StudentService<Student, StudentEntities>>();
+            services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IParentReportService, ParentReportService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<IHelpHoursService, HelpHoursService>();

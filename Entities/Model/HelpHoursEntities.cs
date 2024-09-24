@@ -14,9 +14,8 @@ namespace Entities
         public string AreasForImprovement { get; set; }
 
         public string AcademicAchievements { get; set; }
-        public HelpHoursEntities(string strengthAreas)
+        public HelpHoursEntities()
         {
-            this.StrengthAreas = strengthAreas;
         }
     }
 }
