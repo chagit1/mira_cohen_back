@@ -57,15 +57,12 @@ namespace Service
 
         public async Task<Institution> AddInstitutionAsync(InstitutionEntities institutionDto)
         {
-            // בדוק אם המשתמש קיים
             var user = await _UserRepository.GetByIdAsync(institutionDto.UserId);
 
             if (user == null)
             {
                 throw new Exception("User not found");
             }
-
-            // יצירת אובייקט Institution עם הנתונים מה-DTO
             var institution = new Institution(institutionDto.InspectorName)
             {
                 InstitutionName = institutionDto.InstitutionName,
@@ -76,8 +73,6 @@ namespace Service
                 ContactEmail = institutionDto.ContactEmail,
                 User = user
             };
-
-            // הוספת המוסד לרשימת המוסדות של המשתמש
             if (user.Institutions == null)
             {
                 user.Institutions = new List<Institution>();
@@ -85,8 +80,7 @@ namespace Service
 
             user.Institutions.Add(institution);
             await _repository.AddAsync(institution);
-            // עדכון המשתמש
-            await _UserRepository.UpdateAsync(user);
+            //await _UserRepository.UpdateAsync(user);
 
             return institution;
         }
