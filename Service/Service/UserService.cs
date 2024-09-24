@@ -42,6 +42,7 @@ namespace Service
 
             var userRep = _mapper.Map<User>(user);
             var addedUser = await _repository.AddAsync(userRep);
+
             return _mapper.Map<UserEntities>(addedUser); 
         }          
 

@@ -1,6 +1,10 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Repository;
 using Service;
 
 namespace MiraCohen.Controllers
@@ -24,7 +28,14 @@ namespace MiraCohen.Controllers
         {            
             return await _helpHoursService.GetAllAsync();
         }
+        [HttpGet("GetAllStudent")]
+        public async Task<List<StudentEntities>> GetAllStudent()
+        {
+           List<StudentEntities> a = await _studentService.GetAllAsync();
+            return a;
+        }
 
+      
         [HttpGet("GetById/{helpHoursId}")]
         public async Task<HelpHoursEntities> GetById(string helpHoursId)
         {
