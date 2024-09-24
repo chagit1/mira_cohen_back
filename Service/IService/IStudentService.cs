@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public interface IStudentService<TDTO>
+    public interface IStudentService
     { 
-    Task<List<TDTO>> GetAllAsync();
-        Task<TDTO> GetByIdAsync(string id);
-        Task<TDTO> AddAsync(TDTO dto);
-        Task<TDTO> UpdateAsync(TDTO dto);
+    Task<List<StudentEntities>> GetAllAsync();
+        Task<StudentEntities> GetByIdAsync(string id);
+        Task<StudentEntities> AddAsync(StudentEntities dto);
+        Task<StudentEntities> UpdateAsync(StudentEntities dto);
         Task<bool> DeleteAsync(string id);
     }
 }

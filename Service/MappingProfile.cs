@@ -26,7 +26,7 @@ namespace Service
             CreateMap<Institution, InstitutionEntities>().ReverseMap();
             CreateMap<HelpHours, HelpHoursEntities>().ReverseMap();
             CreateMap<EligibilityAndCharacterization, EligibilityAndCharacterizationEntities>().ReverseMap();
-            
+
         }
     }
 }

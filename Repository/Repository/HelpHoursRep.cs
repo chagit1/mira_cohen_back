@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class HelpHoursRep : StudentRep<HelpHours>
-    {
-        public HelpHoursRep(IContext context)
-        : base(context)
-        {
-        }
+    //public class HelpHoursRep : StudentRep<HelpHours>
+    //{
+    //    public HelpHoursRep(IContext context)
+    //    : base(context)
+    //    {
+    //    }
 
-    }
+    //}
 }

@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public interface IEligibilityAndCharacterizationService : IStudentService<EligibilityAndCharacterizationEntities>
+    public interface IEligibilityAndCharacterizationService : IStudentService
     {
+        Task<List<EligibilityAndCharacterizationEntities>> GetAllAsync();
+        Task<EligibilityAndCharacterizationEntities> GetByIdAsync(string id);
+        Task<EligibilityAndCharacterizationEntities> UpdateAsync(EligibilityAndCharacterizationEntities eligibilityAndCharacterizationEntities);
+
+
     }
 }

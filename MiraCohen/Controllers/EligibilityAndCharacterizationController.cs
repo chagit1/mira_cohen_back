@@ -9,17 +9,19 @@ namespace MiraCohen.Controllers
     [ApiController]
     public class EligibilityAndCharacterizationController : ControllerBase
     {
+        private readonly IStudentService _studentService;
         private readonly IEligibilityAndCharacterizationService _eligibilityAndCharacterizationService;
 
-        public EligibilityAndCharacterizationController(IEligibilityAndCharacterizationService eligibilityAndCharacterizationService)
+        public EligibilityAndCharacterizationController(IStudentService studentService, IEligibilityAndCharacterizationService eligibilityAndCharacterizationService)
         {
+            _studentService = studentService;
             _eligibilityAndCharacterizationService = eligibilityAndCharacterizationService;
         }
 
         [HttpGet]
         public async Task<List<EligibilityAndCharacterizationEntities>> GetAll()
         {
-            return await _eligibilityAndCharacterizationService.GetAllAsync();
+            return await _eligibilityAndCharacterizationService.GetAllAsync();       
         }
 
         [HttpGet("GetById/{eligibilityAndCharacterizationId}")]
@@ -31,7 +33,7 @@ namespace MiraCohen.Controllers
         [HttpDelete("Delete/{eligibilityAndCharacterizationId}")]
         public async Task<bool> Delete(string eligibilityAndCharacterizationId)
         {
-            return await _eligibilityAndCharacterizationService.DeleteAsync(eligibilityAndCharacterizationId);
+            return await _studentService.DeleteAsync(eligibilityAndCharacterizationId);
         }
 
         [HttpPost("Add")]
@@ -41,7 +43,7 @@ namespace MiraCohen.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var id = await _eligibilityAndCharacterizationService.AddAsync(eligibilityAndCharacterization);
+            var id = await _studentService.AddAsync(eligibilityAndCharacterization);
             return Ok(id);
         }
 
