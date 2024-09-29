@@ -8,8 +8,8 @@ public class Institution
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
 
-        [BsonElement("UserId")]
-        public string UserId { get; set; }
+    [BsonElement("UserId")]
+    public string UserId { get; set; }
 
     [BsonElement("InstitutionName")]
     [BsonIgnoreIfNull]

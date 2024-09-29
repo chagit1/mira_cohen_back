@@ -54,35 +54,5 @@ namespace Service
         {
             return await _repository.DeleteAsync(id);
         }
-
-        public async Task<Institution> AddInstitutionAsync(InstitutionEntities institutionDto)
-        {
-            var user = await _UserRepository.GetByIdAsync(institutionDto.UserId);
-
-            if (user == null)
-            {
-                throw new Exception("User not found");
-            }
-            var institution = new Institution(institutionDto.InspectorName)
-            {
-                InstitutionName = institutionDto.InstitutionName,
-                Symbol = institutionDto.Symbol,
-                ManagerName = institutionDto.ManagerName,
-                ContactPerson = institutionDto.ContactPerson,
-                ContactPhone = institutionDto.ContactPhone,
-                ContactEmail = institutionDto.ContactEmail,
-                User = user
-            };
-            if (user.Institutions == null)
-            {
-                user.Institutions = new List<Institution>();
-            }
-
-            user.Institutions.Add(institution);
-            await _repository.AddAsync(institution);
-            //await _UserRepository.UpdateAsync(user);
-
-            return institution;
-        }
     }
 }
