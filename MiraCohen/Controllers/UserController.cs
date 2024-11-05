@@ -57,7 +57,7 @@ namespace MiraCohen.Controllers
 
             if (user == null)
                 return Unauthorized();
-
+            
             var token = _jwtTokenService.GenerateToken(user);
 
             var cookieOptions = new CookieOptions
@@ -81,6 +81,8 @@ namespace MiraCohen.Controllers
                     user.Email,
                     user.Password,
                     user.Role,
+                    user.Institutions
+
                 }
             });
         }
