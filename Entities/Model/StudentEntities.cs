@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Entities;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,8 +9,7 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class StudentEntities
-        //: IEtity
+    public class StudentEntities 
     {
         public string Id { get; set; }
 

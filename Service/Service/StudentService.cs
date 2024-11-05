@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Entities;
+using Entities;
 using Repository;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,30 +25,8 @@ namespace Service
         public async Task<List<StudentEntities>> GetAllAsync()
         {
             var entities = await _repository.GetAllAsync();
-
-            return _mapper.Map<List<StudentEntities>>(entities);            
+            return _mapper.Map<List<StudentEntities>>(entities);
         }
-        //public async Task<List<StudentEntities>> GetAllAsync()
-        //{
-
-        //    var entities = await _repository.GetAllAsync();
-        //    var dtoList = entities.Select(entity =>
-        //    {
-        //        if (entity is HelpHours helpHours)
-        //        {
-        //            return _mapper.Map<HelpHoursEntities>(helpHours);
-        //        }
-        //        else if (entity is EligibilityAndCharacterization eligibility)
-        //        {
-        //            return _mapper.Map<EligibilityAndCharacterizationEntities>(eligibility);
-        //        }
-        //        else
-        //        {
-        //            return _mapper.Map<StudentEntities>(entity);
-        //        }
-        //    }).ToList();
-        //    return dtoList;
-        //}
 
         public async Task<StudentEntities> GetByIdAsync(string id)
         {
@@ -54,7 +34,6 @@ namespace Service
             return _mapper.Map<StudentEntities>(entity);
         }
 
-      
         public async Task<StudentEntities> AddAsync(StudentEntities dto)
         {
             Student entity;
@@ -65,10 +44,10 @@ namespace Service
                 addedEntity = await _repository.AddAsync(entity);
                 return _mapper.Map<HelpHoursEntities>(addedEntity);
             }
-          
+
             entity = _mapper.Map<EligibilityAndCharacterization>(dto);
             addedEntity = await _repository.AddAsync(entity);
-            return _mapper.Map<EligibilityAndCharacterizationEntities>(addedEntity);         
+            return _mapper.Map<EligibilityAndCharacterizationEntities>(addedEntity);
         }
 
 
