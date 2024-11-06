@@ -29,8 +29,8 @@ namespace Service
                .Include<HelpHours, HelpHoursEntities>();
 
             // מיפויים למחלקות היורשות
-            CreateMap<EligibilityAndCharacterization, EligibilityAndCharacterizationEntities>();
-            CreateMap<HelpHours, HelpHoursEntities>();
+            CreateMap<EligibilityAndCharacterization, EligibilityAndCharacterizationEntities>().ReverseMap();
+            CreateMap<HelpHours, HelpHoursEntities>().ReverseMap();
         }
     }
 }
