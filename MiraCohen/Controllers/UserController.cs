@@ -62,11 +62,13 @@ namespace MiraCohen.Controllers
 
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true,  // עוזר להגן על העוגיה כך שלא תהיה נגישה מ-JavaScript.
-                Secure = true,    // מבטיח שהעוגיה תשלח רק דרך HTTPS (בייצור יש להשתמש בזה).
-                //SameSite = SameSite.Strict, // מונע שליחת העוגיה בבקשות צד שלישי.
-                Expires = DateTime.UtcNow.AddMinutes(60) // פקיעת תוקף העוגיה.
+                HttpOnly = true,
+                Secure = true,
+                Expires = DateTime.UtcNow.AddMinutes(60),
+                SameSite = SameSiteMode.None
+
             };
+
             Response.Cookies.Append("jwtToken", token, cookieOptions);
 
             return Ok(new

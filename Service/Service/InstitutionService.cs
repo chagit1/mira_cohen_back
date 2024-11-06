@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Service
@@ -12,11 +13,14 @@ namespace Service
     public class InstitutionService : IInstitutionService
     {
         private readonly IDataRepository<Institution> _repository;
+        private readonly IDataRepository<User> _UserRepository;
+
         private readonly IMapper _mapper;
 
-        public InstitutionService(IDataRepository<Institution> repository, IMapper mapper)
+        public InstitutionService(IDataRepository<Institution> repository, IDataRepository<User> UserRepository, IMapper mapper)
         {
             _repository = repository;
+            _UserRepository = UserRepository;
             _mapper = mapper;
         }
 
