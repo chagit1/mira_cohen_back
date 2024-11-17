@@ -41,34 +41,40 @@ namespace MiraCohen.Controllers
             return results;
         }
 
-            [HttpGet("GetById/{helpHoursId}")]
-            public async Task<HelpHoursEntities> GetById(string helpHoursId)
+        [HttpGet("GetById/{helpHoursId}")]
+        public async Task<HelpHoursEntities> GetById(string helpHoursId)
+        {
+            return await _helpHoursService.GetByIdAsync(helpHoursId);
+        }
+
+        [HttpDelete("Delete/{helpHoursId}")]
+        public async Task<bool> Delete(string helpHoursId)
+        {
+            return await _studentService.DeleteAsync(helpHoursId);
+        }
+
+        [HttpDelete("DeleteStudent/{studentId}")]
+        public async Task<bool> DeleteStudent(string studentId)
+        {
+            return await _studentService.DeleteAsync(studentId);
+        }
+
+        [HttpPost("Add")]
+        public async Task<ActionResult<HelpHoursEntities>> Add(HelpHoursEntities helpHours)
+        {
+            if (!ModelState.IsValid)
             {
-                return await _helpHoursService.GetByIdAsync(helpHoursId);
+                return BadRequest(ModelState);
             }
 
-            [HttpDelete("Delete/{helpHoursId}")]
-            public async Task<bool> Delete(string helpHoursId)
-            {
-                return await _studentService.DeleteAsync(helpHoursId);
-            }
+            var addedEntity = await _studentService.AddAsync(helpHours);
+            return CreatedAtAction(nameof(GetById), new { helpHoursId = addedEntity.Id }, addedEntity);
+        }
 
-            [HttpPost("Add")]
-            public async Task<ActionResult<HelpHoursEntities>> Add(HelpHoursEntities helpHours)
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                var addedEntity = await _studentService.AddAsync(helpHours);
-                return CreatedAtAction(nameof(GetById), new { helpHoursId = addedEntity.Id }, addedEntity);
-            }
-
-            [HttpPut("Update")]
-            public async Task<HelpHoursEntities> Update(HelpHoursEntities helpHours)
-            {
-                return await _helpHoursService.UpdateAsync(helpHours);
-            }
+        [HttpPut("Update")]
+        public async Task<HelpHoursEntities> Update(HelpHoursEntities helpHours)
+        {
+            return await _helpHoursService.UpdateAsync(helpHours);
         }
     }
+}
