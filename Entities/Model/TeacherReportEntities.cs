@@ -37,6 +37,6 @@ namespace Entities
     {
         Divorced,
         Married,
-        Separated
+        Widow
     }
 }

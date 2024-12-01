@@ -17,7 +17,6 @@ namespace Repository
         public string Id { get; set; }
 
         [BsonElement("StudentId")]
-        [BsonIgnoreIfNull]
         public string StudentId { get; set; }
 
         [BsonElement("ReadingAndWritingSkills")]
@@ -64,13 +63,11 @@ namespace Repository
             this.SocialAndEmotionalConduct = socialAndEmotionalConduct;            
         }
     }
-
-
     public enum FamilyStatusEnum
     {
         Divorced,
         Married,
-        Separated
+        Widow
     }
 
 }

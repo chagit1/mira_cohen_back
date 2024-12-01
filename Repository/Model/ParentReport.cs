@@ -17,8 +17,7 @@ namespace Repository
         public string ParentReportId { get; set; }
 
         [BsonElement("StudentId")]
-        [BsonIgnoreIfNull]
-        public string StudentId { get; }
+        public string StudentId { get; set; }
 
         [BsonElement("StrengthArea")]
         [BsonIgnoreIfNull]
