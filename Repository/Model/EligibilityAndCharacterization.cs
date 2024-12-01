@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
+    [BsonDiscriminator("EligibilityAndCharacterization")]
     public class EligibilityAndCharacterization : Student
     {
         [BsonElement("Diagnosis")]
