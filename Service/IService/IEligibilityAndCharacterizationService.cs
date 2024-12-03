@@ -12,7 +12,5 @@ namespace Service
         Task<List<EligibilityAndCharacterizationEntities>> GetAllAsync();
         Task<EligibilityAndCharacterizationEntities> GetByIdAsync(string id);
         Task<EligibilityAndCharacterizationEntities> UpdateAsync(EligibilityAndCharacterizationEntities eligibilityAndCharacterizationEntities);
-
-
     }
 }
