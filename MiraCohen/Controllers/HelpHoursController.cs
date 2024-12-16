@@ -29,18 +29,7 @@ namespace MiraCohen.Controllers
         {
             return await _helpHoursService.GetAllAsync();
         }
-        [HttpGet("GetAllStudent")]
-        public async Task<List<Object>> GetAllStudent()
-        {
-            List<StudentEntities> a = await _studentService.GetAllAsync();
-            var results = new List<Object>();
-            foreach (var student in a)
-            {
-                results.Add(student);
-            }
-            return results;
-        }
-
+       
         [HttpGet("GetById/{helpHoursId}")]
         public async Task<HelpHoursEntities> GetById(string helpHoursId)
         {
@@ -53,12 +42,7 @@ namespace MiraCohen.Controllers
             return await _studentService.DeleteAsync(helpHoursId);
         }
 
-        [HttpDelete("DeleteStudent/{studentId}")]
-        public async Task<bool> DeleteStudent(string studentId)
-        {
-            return await _studentService.DeleteAsync(studentId);
-        }
-
+       
         [HttpPost("Add")]
         public async Task<ActionResult<HelpHoursEntities>> Add(HelpHoursEntities helpHours)
         {
@@ -71,6 +55,23 @@ namespace MiraCohen.Controllers
             return CreatedAtAction(nameof(GetById), new { helpHoursId = addedEntity.Id }, addedEntity);
         }
 
+        [HttpPost("AddMulti")]
+        public async Task<IActionResult> AddMultipleStudents([FromBody] List<HelpHoursEntities> dtoList)
+        {
+            if (dtoList == null || dtoList.Count == 0)
+            {
+                return BadRequest("The input list is empty or null.");
+            }
+            try
+            {
+                var addedStudents = await _studentService.AddMultiAsync(dtoList);
+                return Ok(addedStudents);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
         [HttpPut("Update")]
         public async Task<HelpHoursEntities> Update(HelpHoursEntities helpHours)
         {

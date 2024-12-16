@@ -49,6 +49,58 @@ namespace Repository
             await _context.Students.InsertOneAsync(student);
             return student;
         }
+      
+        public async Task<List<Student>> AddMultiAsync(List<Student> students)
+        {
+            try
+            {
+                if (students == null || students.Count == 0)
+                    throw new ArgumentNullException(nameof(students), "Student list cannot be null or empty.");
+
+                var institution = await _context.Institutions
+                    .Find(i => i.Id == students.First().InstitutionId)
+                    .FirstOrDefaultAsync();
+
+                if (institution == null)
+                    throw new InvalidOperationException("Institution not found.");
+
+                students = students.Select(s =>
+                {
+                    s.Id = ObjectId.GenerateNewId().ToString();
+                    return s;
+                }).ToList();
+
+                institution.Students.AddRange(students);
+
+                var filter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
+                var updateResult = await _context.Institutions.ReplaceOneAsync(filter, institution);
+
+                if (updateResult.MatchedCount == 0)
+                    throw new InvalidOperationException("Failed to update institution.");
+
+                // הוספת הסטודנטים למסד הסטודנטים
+                await _context.Students.InsertManyAsync(students);
+                return students;
+            }
+            catch (ArgumentNullException ex)
+            {
+                // טיפול בחריגה של מערך null או ריק
+                Console.Error.WriteLine($"Argument Error: {ex.Message}");
+                throw;
+            }
+            catch (InvalidOperationException ex)
+            {
+                // טיפול בחריגות קשורות לאי מציאת המוסד או בעיות אחרות
+                Console.Error.WriteLine($"Operation Error: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // טיפול בחריגות כלליות אחרות
+                Console.Error.WriteLine($"Unexpected Error: {ex.Message}");
+                throw;
+            }
+        }
 
         public async Task<Student> UpdateAsync(Student entity)
         {

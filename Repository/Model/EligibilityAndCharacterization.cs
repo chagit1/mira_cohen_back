@@ -21,23 +21,23 @@ namespace Repository
 
         [BsonElement("SyncWithDiagnosis")]
         [BsonIgnoreIfNull]
-        public bool SyncWithDiagnosis { get; set; }
+        public bool? SyncWithDiagnosis { get; set; }
 
         [BsonElement("ManagerSignature")]
         [BsonIgnoreIfNull]
-        public bool ManagerSignature { get; set; }
+        public bool? ManagerSignature { get; set; }
 
         [BsonElement("TeacherSignature")]
         [BsonIgnoreIfNull]
-        public bool TeacherSignature { get; set; }
+        public bool? TeacherSignature { get; set; }
 
         [BsonElement("SupervisorSignature")]
         [BsonIgnoreIfNull]
-        public bool SupervisorSignature { get; set; }
+        public bool? SupervisorSignature { get; set; }
 
         [BsonElement("UploadedToShiluvit")]
         [BsonIgnoreIfNull]
-        public bool UploadedToShiluvit { get; set; }
+        public bool? UploadedToShiluvit { get; set; }
 
         [BsonElement("ParentReport")]
         [BsonIgnoreIfNull]
