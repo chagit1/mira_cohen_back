@@ -128,5 +128,10 @@ namespace Repository
             var result = await _context.ParentReports.DeleteOneAsync(p => p.ParentReportId == parentReportId);
             return result.DeletedCount > 0;
         }
+
+        public Task<List<ParentReport>> AddMultiAsync(List<ParentReport> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

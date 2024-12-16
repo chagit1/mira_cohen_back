@@ -66,6 +66,11 @@ namespace Repository
             var result = await _context.Users.DeleteOneAsync(user => user.Id == id);
             return result.DeletedCount > 0;
         }
+
+        public Task<List<User>> AddMultiAsync(List<User> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

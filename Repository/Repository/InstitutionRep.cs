@@ -59,5 +59,10 @@ namespace Repository
             var result = await _context.Institutions.DeleteOneAsync(i => i.Id == id);
             return result.DeletedCount > 0;
         }
+
+        public Task<List<Institution>> AddMultiAsync(List<Institution> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -22,55 +22,54 @@ namespace Repository
         
         [BsonElement("FirstName")]
         [BsonIgnoreIfNull]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [BsonElement("LastName")]
         [BsonIgnoreIfNull]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [BsonElement("BirthDate")]
         [BsonIgnoreIfNull]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         [BsonElement("TZ")]
         [BsonIgnoreIfNull]
-        public string TZ { get; set; }
+        public string? TZ { get; set; }
 
         [BsonElement("MotherName")]
         [BsonIgnoreIfNull]
-        public string MotherName { get; set; }
+        public string? MotherName { get; set; }
 
         [BsonElement("FatherName")]
         [BsonIgnoreIfNull]
-        public string FatherName { get; set; }
+        public string? FatherName { get; set; }
 
         [BsonElement("FatherPhone")]
         [BsonIgnoreIfNull]
-        public string FatherPhone { get; set; }
+        public string? FatherPhone { get; set; }
 
         [BsonElement("MotherPhone")]
         [BsonIgnoreIfNull]
-        public string MotherPhone { get; set; }
+        public string? MotherPhone { get; set; }
 
         [BsonElement("HomePhone")]
         [BsonIgnoreIfNull]
-        public string HomePhone { get; set; }
+        public string? HomePhone { get; set; }
 
         [BsonElement("Address")]
         [BsonIgnoreIfNull]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [BsonElement("InstitutionId")]
-        [BsonIgnoreIfNull]
         public string? InstitutionId { get; set; }
 
         [BsonElement("FamilyPosition")]
         [BsonIgnoreIfNull]
-        public int FamilyPosition { get; set; }
+        public int? FamilyPosition { get; set; }
 
         [BsonElement("GradeLevel")]
         [BsonIgnoreIfNull]
-        public string GradeLevel { get; set; }
+        public string? GradeLevel { get; set; }
 
         public Student()
         {
