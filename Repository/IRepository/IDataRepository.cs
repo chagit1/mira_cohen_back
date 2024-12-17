@@ -15,5 +15,6 @@ namespace Repository
         Task<bool> DeleteAsync(string id);
         Task<List<T>> AddMultiAsync(List<T> entities);
 
+
     }
 }
