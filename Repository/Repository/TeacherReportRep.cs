@@ -130,5 +130,10 @@ namespace Repository
             var result = await _context.TeacherReports.DeleteOneAsync(t => t.Id == id);
             return result.DeletedCount > 0;
         }
+
+        public Task<List<TeacherReport>> AddMultiAsync(List<TeacherReport> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

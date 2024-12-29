@@ -14,5 +14,6 @@ namespace Service
         Task<StudentEntities> AddAsync(StudentEntities dto);
         Task<StudentEntities> UpdateAsync(StudentEntities dto);
         Task<bool> DeleteAsync(string id);
+        Task<List<StudentEntities>> AddMultiAsync(IEnumerable<StudentEntities> dto);
     }
 }

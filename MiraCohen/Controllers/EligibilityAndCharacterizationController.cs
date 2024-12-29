@@ -46,6 +46,23 @@ namespace MiraCohen.Controllers
             var id = await _studentService.AddAsync(eligibilityAndCharacterization);
             return Ok(id);
         }
+        [HttpPost("AddMulti")]
+        public async Task<IActionResult> AddMultipleStudents([FromBody] List<EligibilityAndCharacterizationEntities> dtoList)
+        {
+            if (dtoList == null || dtoList.Count == 0)
+            {
+                return BadRequest("The input list is empty or null.");
+            }
+            try
+            {
+                var addedStudents = await _studentService.AddMultiAsync(dtoList);
+                return Ok(addedStudents);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
         [HttpPut("Update")]
         public async Task<EligibilityAndCharacterizationEntities> Update(EligibilityAndCharacterizationEntities eligibilityAndCharacterization)

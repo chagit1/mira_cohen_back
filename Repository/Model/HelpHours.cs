@@ -12,15 +12,15 @@ namespace Repository
     {
         [BsonElement("StrengthAreas")]
         [BsonIgnoreIfNull]
-        public string StrengthAreas { get; set; }
+        public string? StrengthAreas { get; set; }
 
         [BsonElement("AreasForImprovement")]
         [BsonIgnoreIfNull]
-        public string AreasForImprovement { get; set; }
+        public string? AreasForImprovement { get; set; }
 
         [BsonElement("AcademicAchievements")]
         [BsonIgnoreIfNull]
-        public string AcademicAchievements { get; set; }
+        public string? AcademicAchievements { get; set; }
 
         public HelpHours()
         {

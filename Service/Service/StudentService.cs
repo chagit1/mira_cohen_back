@@ -50,7 +50,55 @@ namespace Service
             return _mapper.Map<EligibilityAndCharacterizationEntities>(addedEntity);
         }
 
+        public async Task<List<StudentEntities>> AddMultiAsync(IEnumerable<StudentEntities> dtoList)
+        {
+            List<Student> entities = new List<Student>();
 
+            foreach (var dto in dtoList)
+            {
+                Student entity;
+
+                if (dto is HelpHoursEntities)
+                {
+                    entity = _mapper.Map<HelpHours>(dto);
+                }
+                else if (dto is EligibilityAndCharacterizationEntities)
+                {
+                    entity = _mapper.Map<EligibilityAndCharacterization>(dto);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Unsupported DTO type.");
+                }
+
+                entities.Add(entity);
+            }
+
+            List<Student> addedEntities = await _repository.AddMultiAsync(entities);
+
+            List<StudentEntities> resultList = new List<StudentEntities>();
+            foreach (var addedEntity in addedEntities)
+            {
+                StudentEntities entity;
+                if (addedEntity is HelpHours)
+                {
+                  entity = _mapper.Map<HelpHoursEntities>(addedEntity); 
+                }
+                else if (addedEntity is EligibilityAndCharacterization)
+                {
+                    entity = _mapper.Map<EligibilityAndCharacterizationEntities>(addedEntity); 
+                }
+                else
+                {
+                    throw new InvalidOperationException("Unsupported entity type.");
+                }
+                resultList.Add(entity);
+
+            }
+        
+            return resultList;
+        }
+       
         public async Task<StudentEntities> UpdateAsync(StudentEntities dto)
         {
             var entity = _mapper.Map<Student>(dto);
