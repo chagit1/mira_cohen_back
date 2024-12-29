@@ -78,21 +78,27 @@ namespace Repository
         {
             var filter = Builders<Student>.Filter.Eq("Id", id);
             var result = await _context.Students.DeleteOneAsync(filter);
-            var student = await _context.Students.Find(s => s.Id == id).FirstOrDefaultAsync();
+            Student student = await _context.Students.Find(s => s.Id == id).FirstOrDefaultAsync();
 
-            var institution = await _context.Institutions.Find(i => i.Id == student.InstitutionId).FirstOrDefaultAsync();
-            if (institution != null)
-            {
-                var existingStudent = institution.Students.FirstOrDefault(s => s.Id == id);
-                if (existingStudent != null)
-                {
-                    institution.Students.Remove(existingStudent);
 
-                    var institutionFilter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
-                    await _context.Institutions.ReplaceOneAsync(institutionFilter, institution);
-                }
-            }
-            return result.DeletedCount > 0;
+            //// מציאת המוסד
+            //var institution = await _context.Institutions.Find(i => i.Id == student.InstitutionId).FirstOrDefaultAsync();
+            //if (institution == null)
+            //{
+            //    throw new Exception($"Institution with id {student.InstitutionId} not found");
+            //}
+            Institution institution = await _context.Institutions.Find(i => i.Id == student.InstitutionId).FirstOrDefaultAsync();
+            //if (institution != null)
+                //{
+                //    var existingStudent = institution.Students.FirstOrDefault(s => s.Id == id);
+                //    if (existingStudent != null)
+                //    {
+                //        institution.Students.Remove(existingStudent);
+                //        var institutionFilter = Builders<Institution>.Filter.Eq(i => i.Id, institution.Id);
+                //        await _context.Institutions.ReplaceOneAsync(institutionFilter, institution);
+                //    }
+                //}
+                return result.DeletedCount > 0;
         }
     }
 }
